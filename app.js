@@ -5,6 +5,10 @@ import usersRoutes from './routes/usersRoutes.js'
 // Création du serveur
 const app = express();
 
+// Définition du moteur de template
+app.set('view engine', 'twig')
+app.set('views', './views')
+
 // Middlewares
 app.use(express.static("public"));
 app.use(express.json());
