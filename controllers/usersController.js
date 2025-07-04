@@ -43,7 +43,7 @@ export async function login(req, res) {
         return res.render('login', { error: 'Email ou mot de passe incorrect.', success: null });
     }
 
-    const match = await bcrypt.compare(password, user.hashedpassword);
+    const match = await bcrypt.compare(password, user.hashedPassword);
     if (!match) {
         return res.render('login', { error: 'Email ou mot de passe incorrect.', success: null });
     }   
