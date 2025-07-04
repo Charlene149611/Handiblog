@@ -1,4 +1,5 @@
 import express from 'express'
+import {showLoginForm, login, showRegisterForm, register} from '../controllers/usersController.js'
 
 const router = express.Router()
 
