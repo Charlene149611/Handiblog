@@ -1,16 +1,20 @@
 {% include '_partialHeader.twig'%}
 
 <form action="/auth/register" method="post">
-	<input type="email" name="email" placeholder="email">
-	<input type="password" name="password" placeholder="********">
-	<input type="password" name="confirmPassword" placeholder="Confirmation mot de passe">
-	<button type="submit">Inscription</button>
+  <input type="email" name="email" placeholder="email" />
+  <input type="text" name="username" placeholder="Nom d'utilisateur" required />
+
+  <input type="password" name="password" placeholder="********" />
+  <input
+    type="password"
+    name="confirmPassword"
+    placeholder="Confirmation mot de passe"
+  />
+  <button type="submit">Inscription</button>
 </form>
 
 {% if error %}
-	<p>{{error}}</p>
+<p>{{ error }}</p>
 {% else %}
-	<p>{{success}}</p>
-{% endif %}
-
-{% include '_partialFooter.twig'%}
+<p>{{ success }}</p>
+{% endif %} {% include '_partialFooter.twig'%}
