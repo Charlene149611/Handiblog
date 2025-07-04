@@ -7,10 +7,15 @@ export async function findUserByEmail(email) {
   return rows[0];
 }
 
-export async function createUser(email, hashedPassword, role = "user") {
+export async function createUser(
+  username,
+  email,
+  hashedPassword,
+  role = "lecteur"
+) {
   await pool.query(
-    "INSERT INTO users (email, hashedpassword, role) VALUES (?, ?, ?)",
-    [email, hashedPassword, role]
+    "INSERT INTO users (username, email, hashedpassword, role) VALUES (?, ?, ?)",
+    [username, email, hashedPassword, role]
   );
 }
 // This function creates a new user in the database with the specified email, hashed password, and role.

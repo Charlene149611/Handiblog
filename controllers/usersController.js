@@ -6,9 +6,9 @@ export function showRegisterForm(req, res) {
 }
 
 export async function register(req, res) {
-    const { email, password, confirmPassword, roles } = req.body;
+    const { username, email, password, confirmPassword, role } = req.body;
 
-    if (!email || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
         return res.render('register', { error: 'Tous les champs sont requis.', success: null });
     }
 
@@ -22,7 +22,7 @@ export async function register(req, res) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await createUser(email, hashedPassword, roles || 'user');
+    await createUser(username, email, hashedPassword, role || 'lecteur');
 
     res.render('login' , { error: null, success: 'Inscription réussie. Vous pouvez maintenant vous connecter.' });
 }
@@ -62,6 +62,6 @@ export function logout(req, res) {
             console.error('Erreur lors de la déconnexion:', err);
             return res.redirect('/');
         }
-        res.redirect('/users/login');
+        res.redirect('/auth/login');
     }); 
 }
