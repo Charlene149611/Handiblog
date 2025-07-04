@@ -7,7 +7,7 @@ export async function findUserByEmail(email) {
   return rows[0];
 }
 
-export async function createUser(email, hashedPassword, role = "user") {
+export async function createUser(email, hashedPassword, role) {
   await pool.query(
     "INSERT INTO users (email, hashedpassword, role) VALUES (?, ?, ?)",
     [email, hashedPassword, role]

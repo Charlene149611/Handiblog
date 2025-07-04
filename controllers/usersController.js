@@ -6,7 +6,7 @@ export function showRegisterForm(req, res) {
 }
 
 export async function register(req, res) {
-    const { email, password, confirmPassword, roles } = req.body;
+    const { email, password, confirmPassword, role } = req.body;
 
     if (!email || !password || !confirmPassword) {
         return res.render('register', { error: 'Tous les champs sont requis.', success: null });
@@ -22,7 +22,7 @@ export async function register(req, res) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await createUser(email, hashedPassword, roles || 'user');
+    await createUser(email, hashedPassword, role || 'user');
 
     res.render('login' , { error: null, success: 'Inscription réussie. Vous pouvez maintenant vous connecter.' });
 }
