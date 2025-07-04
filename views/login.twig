@@ -1,0 +1,15 @@
+{% include '_partialHeader.twig'%}
+
+<form action="/auth/login" method="post">
+	<input type="email" name="email" placeholder="email">
+	<input type="password" name="password" placeholder="********">
+	<button type="submit">Inscription</button>
+</form>
+
+{% if error %}
+	<p>{{error}}</p>
+{% else %}
+	<p>{{success}}</p>
+{% endif %}
+
+{% include '_partialFooter.twig'%}
