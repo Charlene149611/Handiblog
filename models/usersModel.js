@@ -14,7 +14,7 @@ export async function createUser(
   role = "lecteur"
 ) {
   await pool.query(
-    "INSERT INTO users (username, email, hashedpassword, role) VALUES (?, ?, ?)",
+    "INSERT INTO users (username, email, hashedPassword, role) VALUES (?, ?, ?, ?)",
     [username, email, hashedPassword, role]
   );
 }

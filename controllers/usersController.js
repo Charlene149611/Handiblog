@@ -48,11 +48,11 @@ export async function login(req, res) {
         return res.render('login', { error: 'Email ou mot de passe incorrect.', success: null });
     }   
 
-    req.session.user = {
-        id: user.id,
-        email: user.email,
-        role: user.role
-    };
+    // req.session.user = {
+    //     id: user.id,
+    //     email: user.email,
+    //     role: user.role
+    // };
     res.redirect('/'); // Redirige vers la page d'accueil ou une autre page après la connexion réussie
 }
 
