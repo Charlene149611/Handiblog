@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import homeRoutes from './routes/homeRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
 
 // Création du serveur
@@ -14,8 +15,8 @@ app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-// app.use('/', homeRoutes)
+// Points d'entrée
+app.use('/', homeRoutes)
 app.use('/auth', usersRoutes)
 // app.use('/article', articleRoutes)
 // app.use('/articles', articlesRoutes)

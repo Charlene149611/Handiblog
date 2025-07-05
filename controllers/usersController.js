@@ -36,7 +36,7 @@ export async function login(req, res) {
 
     if (!email || !password) {
         return res.render('login', { error: 'Tous les champs sont requis.', success: null });
-    }   
+    }   {showLoginForm, login, showRegisterForm, register}
 
     const user = await findUserByEmail(email);
     if (!user) {
