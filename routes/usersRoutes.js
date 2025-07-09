@@ -1,21 +1,60 @@
 import express from 'express'
-import {showLoginForm, login, showRegisterForm, register, modifyUser, deleteUser, checkRights} from '../controllers/usersController.js'
 
-const router = express.Router()
+// Import des contrôleurs
+import {
+  showLoginForm,
+  login,
+  showRegisterForm,
+  register,
+  showProfile,
+  updateProfile,
+  logout,
+  deleteAccount,
+  listUsers,
+  modifyUser,
+  deleteUser,
+  checkRights,
+} from "../controllers/usersController.js";
 
-// Routes
-// Identification d'un utilisateur existant
-router.get('/login', showLoginForm)
-router.post('/login', login)
+// Import des middlewares pour protéger les routes
+import { isAuthenticated, requireRole, protect } from "../middlewares/authMiddleware.js";
 
-// Enregistrement d'un nouvel utilisateur
-router.get('/register', showRegisterForm)
-router.post('/register', register)
+// Création du routeur Express
+const router = express.Router();
 
-// Modification d'un utilisateur
+// --- Authentification ---
+// Affiche le formulaire de connexion
+router.get("/login", showLoginForm);
+// Traite la soumission du formulaire de connexion
+router.post("/login", login);
+
+// Affiche le formulaire d'inscription
+router.get("/register", showRegisterForm);
+// Traite la soumission du formulaire d'inscription
+router.post("/register", register);
+
+// Déconnecte l'utilisateur
+router.get("/logout", logout);
+
+// --- Profil utilisateur (protégé par authentification) ---
+// Affiche la page de profil uniquement si l'utilisateur est connecté
+router.get("/profile", isAuthenticated, showProfile);
+// Met à jour le profil (nom, email...) uniquement si connecté
+router.post("/profile", isAuthenticated, updateProfile);
+
+// --- Modification d'un utilisateur ---
 router.put('/modify/:id', protect, modifyUser)
 
-// Suppression d'un utilisateur
+// --- Suppression d'un utilisateur ---
 router.delete('/delete/:id', protect, deleteUser)
 
-export default router
+// --- Suppression du compte (protégée) ---
+// Supprime le compte de l'utilisateur connecté
+router.post("/delete", isAuthenticated, deleteAccount);
+
+// --- Liste des utilisateurs (réservée aux admins) ---
+// Affiche tous les utilisateurs (accessible uniquement si rôle admin)
+router.get("/users", requireRole("admin"), listUsers);
+
+// Export du routeur pour l'utiliser dans app.js
+export default router;
