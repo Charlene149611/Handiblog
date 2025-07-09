@@ -59,3 +59,13 @@ export const actualiserArticle = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const supprimerArticle = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Articles.deleteArticle(id);
+        res.status(204).json({ message: "Article supprimé" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
