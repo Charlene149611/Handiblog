@@ -12,4 +12,10 @@ router.post('/login', login)
 router.get('/register', showRegisterForm)
 router.post('/register', register)
 
+// Modification d'un utilisateur
+router.put('/modify/:id', checkRights, modifyUser)
+
+// Suppression d'un utilisateur
+router.delete('/delete/:id', checkRights, deleteUser)
+
 export default router
