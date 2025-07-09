@@ -18,8 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // Points d'entrée
 app.use('/', homeRoutes)
 app.use('/auth', usersRoutes)
-// app.use('/article', articleRoutes)
-// app.use('/articles', articlesRoutes)
+app.use('/articles', articlesRoutes)
 
 // Lancement du serveur
 const PORT = process.env.PORT || 3009;

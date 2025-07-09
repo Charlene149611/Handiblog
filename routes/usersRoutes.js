@@ -1,5 +1,5 @@
 import express from 'express'
-import {showLoginForm, login, showRegisterForm, register} from '../controllers/usersController.js'
+import {showLoginForm, login, showRegisterForm, register, modifyUser, deleteUser, checkRights} from '../controllers/usersController.js'
 
 const router = express.Router()
 
@@ -11,5 +11,11 @@ router.post('/login', login)
 // Enregistrement d'un nouvel utilisateur
 router.get('/register', showRegisterForm)
 router.post('/register', register)
+
+// Modification d'un utilisateur
+router.put('/modify/:id', protect, modifyUser)
+
+// Suppression d'un utilisateur
+router.delete('/delete/:id', protect, deleteUser)
 
 export default router
