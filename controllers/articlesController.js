@@ -22,7 +22,8 @@ export const creerArticle = async (req, res) => {
 export async function listerArticles(req, res) {
     const [articles] = await Articles.getAllArticles();
 
-    if (!articles) return res.status(404).json({ error: "Aucun article trouvé" });
+    if (!articles)
+        return res.status(404).json({ error: "Aucun article trouvé" });
 
     res.status(200).json(articles);
 }
@@ -37,10 +38,24 @@ export const obtenirArticle = async (req, res) => {
 };
 
 export const actualiserArticle = async (req, res) => {
-    const {id} = req.params
-    const {title, content, category, user_id} = req.params
-    const image_url = req.file ? req.file.path : null
-    const verified = false
-    const created_at = new Date()
-}
-
+    const { id } = req.params;
+    const { title, content, category, user_id } = req.body;
+    const image_url = req.file ? req.file.path : null;
+    const verified = false;
+    const created_at = new Date();
+    try {
+        await Articles.updateArticle(
+            id,
+            title,
+            content,
+            category,
+            user_id,
+            image_url,
+            verified,
+            created_at
+        );
+        res.status(201).json("Article modifié");
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

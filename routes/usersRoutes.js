@@ -13,9 +13,9 @@ router.get('/register', showRegisterForm)
 router.post('/register', register)
 
 // Modification d'un utilisateur
-router.put('/modify/:id', checkRights, modifyUser)
+router.put('/modify/:id', protect, modifyUser)
 
 // Suppression d'un utilisateur
-router.delete('/delete/:id', checkRights, deleteUser)
+router.delete('/delete/:id', protect, deleteUser)
 
 export default router
