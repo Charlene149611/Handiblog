@@ -3,7 +3,7 @@ import {
   findUserByEmail,
   createUser,
   updateUserPartial,
-  deleteUser,
+  deleteUser as deleteUserFromModel,
   getAllUsers,
 } from "../models/usersModel.js";
 
@@ -16,7 +16,6 @@ export function showRegisterForm(req, res) {
 export async function register(req, res) {
   const { username, email, password, confirmPassword, role } = req.body;
 
-  // Vérifie que tous les champs sont remplis
   if (!username || !email || !password || !confirmPassword) {
     return res.render("register", {
       error: "Tous les champs sont requis.",
@@ -24,7 +23,6 @@ export async function register(req, res) {
     });
   }
 
-  // Vérifie que les deux mots de passe sont identiques
   if (password !== confirmPassword) {
     return res.render("register", {
       error: "Les mots de passe ne correspondent pas.",
@@ -32,7 +30,6 @@ export async function register(req, res) {
     });
   }
 
-  // Vérifie si l'utilisateur existe déjà par son email
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     return res.render("register", {
@@ -41,11 +38,9 @@ export async function register(req, res) {
     });
   }
 
-  // Hash du mot de passe et création de l'utilisateur
   const hashedPassword = await bcrypt.hash(password, 10);
   await createUser(username, email, hashedPassword, role || "lecteur");
 
-  // Redirige vers la page de connexion avec un message de succès
   res.render("login", {
     error: null,
     success: "Inscription réussie. Vous pouvez maintenant vous connecter.",
@@ -57,11 +52,10 @@ export function showLoginForm(req, res) {
   res.render("login", { error: null, success: null });
 }
 
-// Traite la connexion de l'utilisateur
+// Traite la connexion
 export async function login(req, res) {
   const { email, password } = req.body;
 
-  // Vérifie que tous les champs sont remplis
   if (!email || !password) {
     return res.render("login", {
       error: "Tous les champs sont requis.",
@@ -69,7 +63,6 @@ export async function login(req, res) {
     });
   }
 
-  // Recherche de l'utilisateur par email
   const user = await findUserByEmail(email);
   if (!user) {
     return res.render("login", {
@@ -78,7 +71,6 @@ export async function login(req, res) {
     });
   }
 
-  // Vérifie que le mot de passe correspond
   const match = await bcrypt.compare(password, user.hashedPassword);
   if (!match) {
     return res.render("login", {
@@ -87,12 +79,11 @@ export async function login(req, res) {
     });
   }
 
-  // Connexion réussie (la session peut être activée ici si nécessaire)
   // req.session.user = { id: user.id, email: user.email, role: user.role };
-  res.redirect("/"); // Redirige vers la page d'accueil
+  res.redirect("/");
 }
 
-// Déconnecte l'utilisateur
+// Déconnexion
 export function logout(req, res) {
   req.session.destroy((err) => {
     if (err) {
@@ -112,7 +103,7 @@ export function showProfile(req, res) {
   res.render("profile", { user });
 }
 
-// Met à jour les informations du profil
+// Met à jour les infos du profil
 export async function updateProfile(req, res) {
   const user = req.session.user;
   if (!user) {
@@ -121,7 +112,6 @@ export async function updateProfile(req, res) {
 
   const { username, email, role } = req.body;
 
-  // Vérifie qu'au moins un champ est modifié
   if (!username && !email && !role) {
     return res.render("profile", {
       user,
@@ -130,7 +120,6 @@ export async function updateProfile(req, res) {
   }
 
   try {
-    // Si l'email est changé, vérifie qu'il n'est pas utilisé par un autre utilisateur
     if (email && email !== user.email) {
       const existingUser = await findUserByEmail(email);
       if (existingUser && existingUser.id !== user.id) {
@@ -141,14 +130,12 @@ export async function updateProfile(req, res) {
       }
     }
 
-    // Mise à jour partielle de l'utilisateur
     await updateUserPartial(user.id, {
       username: username || null,
       email: email || null,
       role: role || null,
     });
 
-    // Met à jour les infos en session
     if (username) user.username = username;
     if (email) user.email = email;
     if (role) user.role = role;
@@ -163,14 +150,15 @@ export async function updateProfile(req, res) {
   }
 }
 
-// Supprime le compte de l'utilisateur connecté
+// Supprime le compte utilisateur connecté
 export async function deleteAccount(req, res) {
   const user = req.session.user;
   if (!user) {
     return res.redirect("/auth/login");
   }
+
   try {
-    await deleteUser(user.id);
+    await deleteUserFromModel(user.id);
     req.session.destroy((err) => {
       if (err) {
         console.error("Erreur lors de la suppression du compte:", err);
@@ -187,7 +175,39 @@ export async function deleteAccount(req, res) {
   }
 }
 
-// Affiche une liste de tous les utilisateurs (ex. pour un admin)
+// Supprime un utilisateur par son ID (admin)
+export async function deleteUser(req, res) {
+  const userId = req.params.id;
+
+  try {
+    await deleteUserFromModel(userId);
+    res.status(200).json({ message: "Utilisateur supprimé avec succès." });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'utilisateur :", error);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+}
+
+// Modifie un utilisateur (admin)
+export async function modifyUser(req, res) {
+  const userId = req.params.id;
+  const { username, email, role } = req.body;
+
+  try {
+    await updateUserPartial(userId, {
+      username: username || null,
+      email: email || null,
+      role: role || null,
+    });
+
+    res.status(200).json({ message: "Utilisateur modifié avec succès." });
+  } catch (error) {
+    console.error("Erreur lors de la modification de l'utilisateur :", error);
+    res.status(500).json({ error: "Erreur serveur." });
+  }
+}
+
+// Liste tous les utilisateurs
 export async function listUsers(req, res) {
   try {
     const users = await getAllUsers();

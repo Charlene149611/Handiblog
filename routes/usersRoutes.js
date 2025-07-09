@@ -1,4 +1,4 @@
-import express from 'express'
+import express from "express";
 
 // Import des contrôleurs
 import {
@@ -13,11 +13,14 @@ import {
   listUsers,
   modifyUser,
   deleteUser,
-  checkRights,
 } from "../controllers/usersController.js";
 
 // Import des middlewares pour protéger les routes
-import { isAuthenticated, requireRole, protect } from "../middlewares/authMiddleware.js";
+import {
+  isAuthenticated,
+  requireRole,
+  protect,
+} from "../middlewares/authMiddleware.js";
 
 // Création du routeur Express
 const router = express.Router();
@@ -43,14 +46,14 @@ router.get("/profile", isAuthenticated, showProfile);
 router.post("/profile", isAuthenticated, updateProfile);
 
 // --- Modification d'un utilisateur ---
-router.put('/modify/:id', protect, modifyUser)
+router.put("/modify/:id", protect, modifyUser);
 
 // --- Suppression d'un utilisateur ---
-router.delete('/delete/:id', protect, deleteUser)
+router.delete("/delete/:id", protect, deleteUser);
 
 // --- Suppression du compte (protégée) ---
 // Supprime le compte de l'utilisateur connecté
-router.post("/delete", isAuthenticated, deleteAccount);
+router.delete("/delete", isAuthenticated, deleteAccount);
 
 // --- Liste des utilisateurs (réservée aux admins) ---
 // Affiche tous les utilisateurs (accessible uniquement si rôle admin)
