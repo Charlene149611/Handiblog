@@ -97,7 +97,7 @@ export async function login(req, res) {
   res.json({
     message: "Connexion réussie.",
     token,
-  });
+  })
 
   res.redirect("/auth/profile");
 }
