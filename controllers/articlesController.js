@@ -13,14 +13,14 @@ export const creerArticle = async (req, res) => {
             image_url,
             created_at
         );
-        res.status(201).json("Article créé");
+        res.status(201).json({ message: "Article créé" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
 export async function listerArticles(req, res) {
-    const [articles] = await Articles.getAllArticles();
+    const articles = await Articles.getAllArticles();
 
     if (!articles)
         return res.status(404).json({ error: "Aucun article trouvé" });
@@ -30,11 +30,11 @@ export async function listerArticles(req, res) {
 
 export const obtenirArticle = async (req, res) => {
     const { id } = req.params;
-    const [articles] = await Articles.getArticleById(id);
+    const article = await Articles.getArticleById(id);
 
-    if (!articles) return res.status(404).json({ error: "Article non trouvé" });
+    if (!article) return res.status(404).json({ error: "Article non trouvé" });
 
-    res.status(200).json(articles[0]);
+    res.status(200).json(article);
 };
 
 export const actualiserArticle = async (req, res) => {
@@ -44,7 +44,7 @@ export const actualiserArticle = async (req, res) => {
     const verified = false;
     const created_at = new Date();
     try {
-        await Articles.updateArticle(
+        const changedRows = await Articles.updateArticle(
             id,
             title,
             content,
@@ -54,7 +54,9 @@ export const actualiserArticle = async (req, res) => {
             verified,
             created_at
         );
-        res.status(201).json("Article modifié");
+        res.status(201).json({
+            message: `Nbre d'articles modifiés : ${changedRows}`,
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -63,8 +65,10 @@ export const actualiserArticle = async (req, res) => {
 export const supprimerArticle = async (req, res) => {
     const { id } = req.params;
     try {
-        await Articles.deleteArticle(id);
-        res.status(204).json({ message: "Article supprimé" });
+        const deletedRows = await Articles.deleteArticle(id);
+        res.status(200).json({
+            message: `Nbre d'articles supprimés : ${deletedRows}`,
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
