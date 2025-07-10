@@ -93,6 +93,12 @@ export async function login(req, res) {
     maxAge: 3600000, // 1 heure
   });
 
+  // Envoi du token dans JSON
+  res.json({
+    message: "Connexion réussie.",
+    token,
+  });
+
   res.redirect("/auth/profile");
 }
 
