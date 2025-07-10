@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import homeRoutes from './routes/homeRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
+import cookieParser from "cookie-parser";
 
 // Création du serveur
 const app = express();
@@ -14,6 +15,7 @@ app.set('views', './views')
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Points d'entrée
 app.use('/', homeRoutes)

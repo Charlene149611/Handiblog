@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import {
   findUserByEmail,
   createUser,
@@ -79,24 +80,31 @@ export async function login(req, res) {
     });
   }
 
-  // req.session.user = { id: user.id, email: user.email, role: user.role };
-  res.redirect("/");
+  // Crée un token JWT pour l'utilisateur
+  const token = jwt.sign(
+    { id: user.id, email: user.email, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" } // Le token expire après 1 heure
+  );
+
+  // Envoi du token dans un cookie sécurisé
+  res.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 3600000, // 1 heure
+  });
+
+  res.redirect("/auth/profile");
 }
 
 // Déconnexion
 export function logout(req, res) {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Erreur lors de la déconnexion:", err);
-      return res.redirect("/");
-    }
-    res.redirect("/auth/login");
-  });
+  res.clearCookie("token"); // Efface le cookie JWT
+  res.redirect("/auth/login");
 }
 
 // Affiche le profil de l'utilisateur connecté
 export function showProfile(req, res) {
-  const user = req.session.user;
+  const user = req.user;
   if (!user) {
     return res.redirect("/auth/login");
   }
@@ -105,7 +113,7 @@ export function showProfile(req, res) {
 
 // Met à jour les infos du profil
 export async function updateProfile(req, res) {
-  const user = req.session.user;
+  const user = req.user;
   if (!user) {
     return res.redirect("/auth/login");
   }
@@ -152,22 +160,17 @@ export async function updateProfile(req, res) {
 
 // Supprime le compte utilisateur connecté
 export async function deleteAccount(req, res) {
-  const user = req.session.user;
+  const user = req.user;
   if (!user) {
     return res.redirect("/auth/login");
   }
 
   try {
     await deleteUserFromModel(user.id);
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Erreur lors de la suppression du compte:", err);
-        return res.redirect("/auth/profile");
-      }
-      res.redirect("/auth/register");
-    });
+    res.clearCookie("token"); // Efface le cookie JWT
+    res.redirect("/auth/register");
   } catch (error) {
-    console.error("Erreur lors de la suppression du compte:", error);
+    console.error("Erreur lors de la suppression du compte :", error);
     res.render("profile", {
       user,
       error: "Erreur lors de la suppression du compte.",

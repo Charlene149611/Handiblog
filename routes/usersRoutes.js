@@ -41,9 +41,9 @@ router.get("/logout", logout);
 
 // --- Profil utilisateur (protégé par authentification) ---
 // Affiche la page de profil uniquement si l'utilisateur est connecté
-router.get("/profile", isAuthenticated, showProfile);
+router.get("/profile", protect, showProfile);
 // Met à jour le profil (nom, email...) uniquement si connecté
-router.post("/profile", isAuthenticated, updateProfile);
+router.post("/profile", protect, updateProfile);
 
 // --- Modification d'un utilisateur ---
 router.put("/modify/:id", protect, modifyUser);
@@ -53,7 +53,7 @@ router.delete("/delete/:id", protect, deleteUser);
 
 // --- Suppression du compte (protégée) ---
 // Supprime le compte de l'utilisateur connecté
-router.delete("/delete", isAuthenticated, deleteAccount);
+router.delete("/delete", protect, deleteAccount);
 
 // --- Liste des utilisateurs (réservée aux admins) ---
 // Affiche tous les utilisateurs (accessible uniquement si rôle admin)
