@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import articlesRoutes from './routes/articlesRoutes.js'
 import homeRoutes from './routes/homeRoutes.js'
+import categoriesRoutes from './routes/categoriesRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
 import cookieParser from "cookie-parser";
 
