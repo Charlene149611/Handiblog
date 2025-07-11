@@ -22,6 +22,7 @@ app.use(cookieParser());
 app.use('/', homeRoutes)
 app.use('/auth', usersRoutes)
 app.use('/articles', articlesRoutes)
+app.use('/categories', categoriesRoutes)
 
 // Lancement du serveur
 const PORT = process.env.PORT || 3009;
