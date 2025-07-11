@@ -105,7 +105,7 @@ export async function login(req, res) {
 // Déconnexion
 export function logout(req, res) {
   res.clearCookie("token"); // Efface le cookie JWT
-  res.redirect("/auth/login");
+  res.json({ message: "Déconnexion réussie." });
 }
 
 // Affiche le profil de l'utilisateur connecté
@@ -121,7 +121,7 @@ export function showProfile(req, res) {
 export async function updateProfile(req, res) {
   const user = req.user;
   if (!user) {
-    return res.redirect("/auth/login");
+    return res.json({ error: "Utilisateur non connecté." });
   }
 
   const { username, email, role } = req.body;
@@ -168,12 +168,13 @@ export async function updateProfile(req, res) {
 export async function deleteAccount(req, res) {
   const user = req.user;
   if (!user) {
-    return res.redirect("/auth/login");
+    return res.json({ error: "Utilisateur non connecté." });
   }
 
   try {
     await deleteUserFromModel(user.id);
     res.clearCookie("token"); // Efface le cookie JWT
+    res.json({ message: "Compte supprimé avec succès." });
     res.redirect("/auth/register");
   } catch (error) {
     console.error("Erreur lors de la suppression du compte :", error);

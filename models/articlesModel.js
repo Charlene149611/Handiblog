@@ -11,20 +11,25 @@ export async function getArticleById(id) {
 }
 
 export async function createArticle(article) {
-  const { title, content } = article;
+  const { title, content, category, user_id, image_url, created_at } = article;
   const [result] = await pool.query(
     "INSERT INTO articles (title, content) VALUES (?, ?)",
-    [title, content]
+    [title, content, category, user_id, image_url, created_at]
   );
   return result.insertId;
 }
 
 export async function updateArticle(id, article) {
-  const { title, content } = article;
-  await pool.query(
-    "UPDATE articles SET title = ?, content = ? WHERE id = ?",
-    [title, content, id]
-  );
+  const { title, content, category, user_id, image_url, created_at } = article;
+  await pool.query("UPDATE articles SET title = ?, content = ? WHERE id = ?", [
+    id,
+    title,
+    content,
+    category,
+    user_id,
+    image_url,
+    created_at,
+  ]);
 }
 
 export async function deleteArticle(id) {
