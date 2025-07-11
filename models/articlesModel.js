@@ -28,11 +28,11 @@ export async function createArticle({
 }
 
 export async function updateArticle({
-    user_id,
+    id,
     title,
     content,
+    user_id,
     category_id,
-    id,
     image_url,
     verified,
     created_at,

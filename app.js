@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import articlesRoutes from './routes/articlesRoutes.js'
 import homeRoutes from './routes/homeRoutes.js'
+import categoriesRoutes from './routes/categoriesRoutes.js'
 import usersRoutes from './routes/usersRoutes.js'
 import cookieParser from "cookie-parser";
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use('/', homeRoutes)
 app.use('/auth', usersRoutes)
 app.use('/articles', articlesRoutes)
+app.use('/categories', categoriesRoutes)
 
 // Lancement du serveur
 const PORT = process.env.PORT || 3009;
