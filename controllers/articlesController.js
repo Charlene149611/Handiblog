@@ -1,14 +1,14 @@
 import * as Articles from "../models/articlesModel.js"; // Import the articles model
 
 export const creerArticle = async (req, res) => {
-    const { title, content, category, user_id } = req.body;
+    const { title, content, category_id, user_id } = req.body;
     const image_url = req.file ? req.file.path : null;
     const created_at = new Date();
     try {
         await Articles.createArticle({
             title,
             content,
-            category,
+            category_id,
             user_id,
             image_url,
             created_at,
@@ -39,7 +39,7 @@ export const obtenirArticle = async (req, res) => {
 
 export const actualiserArticle = async (req, res) => {
     const { id } = req.params;
-    const { title, content, category, user_id } = req.body;
+    const { title, content, category_id, user_id } = req.body;
     const image_url = req.file ? req.file.path : null;
     const verified = false;
     const created_at = new Date();
@@ -48,7 +48,7 @@ export const actualiserArticle = async (req, res) => {
             id,
             title,
             content,
-            category,
+            category_id,
             user_id,
             image_url,
             verified,
