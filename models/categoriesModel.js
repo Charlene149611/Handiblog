@@ -3,7 +3,7 @@ import pool from "../config/db.js";
 // Create
 export async function createCategory( titre ) {
     const [result] = await pool.query(
-        "INSERT INTO articles (titre) VALUES (?)",
+        "INSERT INTO categories (titre) VALUES (?)",
         [titre]
     );
     return result.insertId;
@@ -25,7 +25,7 @@ export async function getCategoryById(id) {
 // Update
 export async function updateCategory({ id, titre }) {
     const [result] = await pool.query(
-        "UPDATE catgories SET titre=? WHERE id = ?",
+        "UPDATE categories SET titre=? WHERE id = ?",
         [titre, id]
     );
     return result.changedRows; // lignes modifiées
