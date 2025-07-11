@@ -178,8 +178,53 @@ L'application adopte un design simple, épuré et accessible :
 
 ## Que fait l'application ?
 
-Elle recenses les handicaps liés au numérique, permet de créer des articles et de contacter des associations. 
+Handiblog recense les problèmes d’accessibilité numérique.
+Elle permet à tout le monde de :
+
+- consulter des articles sur le handicap numérique,
+
+- créer ses propres articles,
+
+- contacter des associations utiles.
 
 ## Indications pour utiliser l'application
+
+Pour voir l'application fonctionner sur ton ordinateur :
+
+- Il faut avoir Node.js installé (téléchargement ici).
+
+- Ouvrir un terminal (ou invite de commande).
+
+- Suivre les étapes ci-dessous pour installer et lancer le projet.
+
+
 ## Indications pour installer les dépendances
+
+Commande à taper dans le terminal 
+
+npm install express twig dotenv mysql2 bcrypt jsonwebtoken multer cors cookie-parser express-session nodemon --save-dev
+
+ Ces outils servent à gérer :
+
+- le serveur web (express)
+
+- l’affichage des pages (twig)
+
+- la base de données (mysql2)
+
+- les connexions utilisateurs (bcrypt, jsonwebtoken, cookie-parser, express-session)
+
+- les fichiers envoyés (multer)
+
+- les problèmes de sécurité ou de compatibilité (cors, dotenv)
+
+- le redémarrage automatique du serveur pendant qu’on code (nodemon)
+
 ## Indications pour lancer l'application
+
+Après avoir installé toutes les dépendances, tape ces commandes dans le terminal :
+
+npm run dev
+
+Cela démarre le serveur, et tu peux ensuite ouvrir ton navigateur sur :
+http://localhost:3000
