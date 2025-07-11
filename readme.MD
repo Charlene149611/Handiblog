@@ -22,6 +22,7 @@ Handiblog/
 │   └── db.js
 ├── controllers/
 │   ├── articlesController.js
+|   ├── homeController.js
 │   └── usersController.js
 ├── middlewares/
 │   ├── authMiddleware.js
@@ -47,7 +48,9 @@ Handiblog/
 │   ├── login.twig
 │   └── register.twig
 ├── .gitignore
+├── .env
 ├── app.js
+├── package-lock.json
 ├── package.json
 └── yarn.lock
 ```
@@ -83,46 +86,52 @@ Chacun travaille sur sa propre branche personnelle, et la branche `main` reste l
 #### Commandes Git utiles
 
 - **Mettre à jour la branche principale locale :**
-    ```bash
-    git checkout main
-    git pull origin main
-    ```
+
+  ```bash
+  git checkout main
+  git pull origin main
+  ```
 
 - **Mettre à jour ta branche perso avec `main` :**
-    ```bash
-    git checkout <ta_branche>  # ex: charlene
-    git merge main
-    ```
+
+  ```bash
+  git checkout <ta_branche>  # ex: charlene
+  git merge main
+  ```
 
 - **Pousser ta branche perso sur GitHub :**
-    ```bash
-    git push origin <ta_branche>
-    # ou pour la première fois :
-    git push -u origin <ta_branche>
-    ```
+
+  ```bash
+  git push origin <ta_branche>
+  # ou pour la première fois :
+  git push -u origin <ta_branche>
+  ```
 
 - **Fusionner ta branche perso dans `main` localement :**
-    ```bash
-    git checkout main
-    git pull origin main
-    git merge <ta_branche>
-    git push origin main
-    ```
+
+  ```bash
+  git checkout main
+  git pull origin main
+  git merge <ta_branche>
+  git push origin main
+  ```
 
 - **Supprimer une branche localement :**
-    ```bash
-    git branch -d <ta_branche>
-    ```
+
+  ```bash
+  git branch -d <ta_branche>
+  ```
 
 - **Supprimer une branche sur GitHub :**
-    ```bash
-    git push origin --delete <ta_branche>
-    ```
+
+  ```bash
+  git push origin --delete <ta_branche>
+  ```
 
 - **Changer l’éditeur Git (par exemple, utiliser Nano au lieu de Vim sous Windows) :**
-    ```bash
-    git config --global core.editor "nano"
-    ```
+  ```bash
+  git config --global core.editor "nano"
+  ```
 
 ---
 
@@ -132,6 +141,22 @@ Chacun travaille sur sa propre branche personnelle, et la branche `main` reste l
 - Toujours relire son code avant de pousser.
 - Résoudre les conflits de fusion avant de pousser sur `main`.
 - Utiliser des messages de commit clairs et concis.
+
+## ✅ PAS A PAS pour git (en résumé pour limiter les conflits de merge)
+
+1. git status // Verifier le status sur la branch actuel
+2. git add .
+3. git commit -m "un message"
+4. git push -u origin [nom_branche] (premier fois, apres "git push")
+
+---
+
+5. git checkout (ou switch) main
+6. git pull
+7. git merge [nom_ma_branche]
+8. git push main
+9. git switch (ou ckeckout) [ma_branche]
+10. git push (de ma branche)
 
 ## 🎨 Design & Accessibilité
 
@@ -150,3 +175,11 @@ L'application adopte un design simple, épuré et accessible :
 - [GitHub Docs — Git Branches](https://docs.github.com/en/get-started/using-git/about-branches)
 
 ---
+
+## Que fait l'application ?
+
+Elle recenses les handicaps liés au numérique, permet de créer des articles et de contacter des associations. 
+
+## Indications pour utiliser l'application
+## Indications pour installer les dépendances
+## Indications pour lancer l'application
