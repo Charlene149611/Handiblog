@@ -17,8 +17,7 @@ import {
 
 // Import des middlewares pour protéger les routes
 import {
-  isAuthenticated,
-  requireRole,
+  authorizeRoles,
   protect,
 } from "../middlewares/authMiddleware.js";
 
@@ -57,7 +56,7 @@ router.delete("/delete", protect, deleteAccount);
 
 // --- Liste des utilisateurs (réservée aux admins) ---
 // Affiche tous les utilisateurs (accessible uniquement si rôle admin)
-router.get("/users", requireRole("admin"), listUsers);
+router.get("/users", protect, authorizeRoles("admin"), listUsers);
 
 // Export du routeur pour l'utiliser dans app.js
 export default router;

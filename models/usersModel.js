@@ -9,12 +9,12 @@ export async function findUserByEmail(email) {
 }
 
 // Crée un nouvel utilisateur dans la base de données
-export async function createUser(
+export async function createUser( {
   username,
   email,
   hashedPassword,
   role = "lecteur"
-) {
+}) {
   await pool.query(
     "INSERT INTO users (username, email, hashedPassword, role) VALUES (?, ?, ?, ?)",
     [username, email, hashedPassword, role]
