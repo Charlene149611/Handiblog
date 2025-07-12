@@ -8,6 +8,14 @@ export async function findUserByEmail(email) {
   return rows[0]; // Retourne le premier utilisateur trouvé
 }
 
+//Vérification si un utilisateur existe avec username
+export async function findUserByUsername(username) {
+  const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [
+    username,
+  ]);
+  return rows[0];
+}
+
 // Crée un nouvel utilisateur dans la base de données
 export async function createUser( {
   username,
@@ -15,10 +23,11 @@ export async function createUser( {
   hashedPassword,
   role = "lecteur"
 }) {
-  await pool.query(
+  const [result] = await pool.query(
     "INSERT INTO users (username, email, hashedPassword, role) VALUES (?, ?, ?, ?)",
     [username, email, hashedPassword, role]
   );
+  return result.insertId;
 }
 
 // Recherche un utilisateur par son ID (utile pour afficher ou modifier un profil)

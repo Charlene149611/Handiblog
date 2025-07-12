@@ -1,6 +1,6 @@
 import express from "express";
 
-// Import des contrôleurs
+// Import des contrôleurs utilisateurs
 import {
   showLoginForm,
   login,
@@ -15,48 +15,54 @@ import {
   deleteUser,
 } from "../controllers/usersController.js";
 
-// Import des middlewares pour protéger les routes
-import {
-  authorizeRoles,
-  protect,
-} from "../middlewares/authMiddleware.js";
+// Import des middlewares
+import { protect } from "../middlewares/authMiddleware.js";
+import { isAdmin } from "../controllers/usersController.js";
 
 // Création du routeur Express
 const router = express.Router();
 
-// --- Authentification ---
+//-------------------------------------------//
+//           AUTHENTIFICATION               //
+//-------------------------------------------//
+
 // Affiche le formulaire de connexion
 router.get("/login", showLoginForm);
-// Traite la soumission du formulaire de connexion
+// Traite la connexion
 router.post("/login", login);
 
 // Affiche le formulaire d'inscription
 router.get("/register", showRegisterForm);
-// Traite la soumission du formulaire d'inscription
+// Traite l'inscription
 router.post("/register", register);
 
 // Déconnecte l'utilisateur
 router.get("/logout", logout);
 
-// --- Profil utilisateur (protégé par authentification) ---
-// Affiche la page de profil uniquement si l'utilisateur est connecté
+//-------------------------------------------//
+//              PROFIL UTILISATEUR          //
+//-------------------------------------------//
+
+// Affiche le profil (nécessite d'être connecté)
 router.get("/profile", protect, showProfile);
-// Met à jour le profil (nom, email...) uniquement si connecté
+// Met à jour le profil (nom, email...)
 router.post("/profile", protect, updateProfile);
 
-// --- Modification d'un utilisateur ---
-router.put("/modify/:id", protect, modifyUser);
-
-// --- Suppression d'un utilisateur ---
-router.delete("/delete/:id", protect, deleteUser);
-
-// --- Suppression du compte (protégée) ---
 // Supprime le compte de l'utilisateur connecté
 router.delete("/delete", protect, deleteAccount);
 
-// --- Liste des utilisateurs (réservée aux admins) ---
-// Affiche tous les utilisateurs (accessible uniquement si rôle admin)
-router.get("/users", protect, authorizeRoles("admin"), listUsers);
+//-------------------------------------------//
+//            FONCTIONNALITÉS ADMIN         //
+//-------------------------------------------//
 
-// Export du routeur pour l'utiliser dans app.js
+// Liste tous les utilisateurs (admin uniquement)
+router.get("/users", protect, isAdmin, listUsers);
+
+// Modifie un utilisateur par son ID (admin uniquement)
+router.put("/modify/:id", protect, isAdmin, modifyUser);
+
+// Supprime un utilisateur par son ID (admin uniquement)
+router.delete("/delete/:id", protect, isAdmin, deleteUser);
+
+// Export du routeur pour utilisation dans app.js
 export default router;
