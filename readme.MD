@@ -46,6 +46,7 @@ Handiblog/
 │   ├── articles.twig
 │   ├── home.twig
 │   ├── login.twig
+    ├── profile.twig
 │   └── register.twig
 ├── .gitignore
 ├── .env
