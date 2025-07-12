@@ -36,6 +36,5 @@ export async function deleteCategory(id) {
     const [result] = await pool.query("DELETE FROM categories WHERE id = ?", [
         id,
     ]);
-    console.log(result.affectedRows);
     return result.affectedRows; // lignes supprimées
 }
